@@ -11,7 +11,6 @@
         // AMD. Make globaly available as well
         define(['moment', 'jquery'], function (moment, jquery) {
             if (!jquery.fn) jquery.fn = {}; // webpack server rendering
-            if (typeof moment !== 'function' && moment.default) moment = moment.default
             return factory(moment, jquery);
         });
     } else if (typeof module === 'object' && module.exports) {
@@ -47,6 +46,8 @@
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
         this.showCustomRangeLabel = true;
+        this.chosenLabelWhenOpenWithCustomRange = true;
+        this.showCalendarsWhenOpenWithCustomRange = true;
         this.timePicker = false;
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
@@ -241,6 +242,12 @@
 
         if (typeof options.showCustomRangeLabel === 'boolean')
             this.showCustomRangeLabel = options.showCustomRangeLabel;
+
+        if (typeof options.chosenLabelWhenOpenWithCustomRange === 'boolean')
+            this.chosenLabelWhenOpenWithCustomRange = options.chosenLabelWhenOpenWithCustomRange;
+
+        if (typeof options.showCalendarsWhenOpenWithCustomRange === 'boolean')
+            this.showCalendarsWhenOpenWithCustomRange = options.showCalendarsWhenOpenWithCustomRange;
 
         if (typeof options.singleDatePicker === 'boolean') {
             this.singleDatePicker = options.singleDatePicker;
@@ -1164,6 +1171,7 @@
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
+                this.container.find('.ranges li').removeClass('active');
                 this.showCalendars();
             } else {
                 var dates = this.ranges[label];
@@ -1321,7 +1329,7 @@
             var i = 0;
             for (var range in this.ranges) {
               if (this.timePicker) {
-                    var format = this.timePickerSeconds ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD HH:mm";
+                    var format = this.timePickerSeconds ? "YYYY-MM-DD hh:mm:ss" : "YYYY-MM-DD hh:mm";
                     //ignore times when comparing dates if time picker seconds is not enabled
                     if (this.startDate.format(format) == this.ranges[range][0].format(format) && this.endDate.format(format) == this.ranges[range][1].format(format)) {
                         customRange = false;
@@ -1339,12 +1347,15 @@
                 i++;
             }
             if (customRange) {
-                if (this.showCustomRangeLabel) {
+                if (this.showCustomRangeLabel && this.chosenLabelWhenOpenWithCustomRange) {
                     this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('data-range-key');
                 } else {
                     this.chosenLabel = null;
                 }
-                this.showCalendars();
+
+                if (this.showCalendarsWhenOpenWithCustomRange) {
+                  this.showCalendars();
+                }
             }
         },
 
