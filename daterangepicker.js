@@ -1079,7 +1079,7 @@
                 }
             }
 
-            // verify size screen to scrool to bottom
+            // verifica telas pequenas
             if(screen.width < 450){
                 document.querySelector('.drp-selected').scrollIntoView();
             }
@@ -1353,14 +1353,11 @@
                 i++;
             }
             if (customRange) {
-                /*
-                The code active the CustomRangeLabelafter after period selected period, but the option was selected early
                 if (this.showCustomRangeLabel) {
                     this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('data-range-key');
                 } else {
                     this.chosenLabel = null;
                 }
-                */
                 this.chosenLabel = null;
                 this.showCalendars();
             }
