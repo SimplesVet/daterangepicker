@@ -111,8 +111,8 @@
                     '<div class="calendar-time"></div>' +
                 '</div>' +
                 '<div class="drp-buttons">' +
-                    '<span class="drp-selected"></span>' +
                     '<button class="cancelBtn" type="button"></button>' +
+                    '<span class="drp-selected"></span>' +
                     '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                 '</div>' +
             '</div>';
@@ -1078,6 +1078,11 @@
                     });
                 }
             }
+
+            // verifica telas pequenas
+            if(screen.width < 450){
+                document.querySelector('.drp-selected').scrollIntoView();
+            }
         },
 
         show: function(e) {
@@ -1168,10 +1173,11 @@
         },
 
         clickRange: function(e) {
+            this.container.find('.ranges li').removeClass('active');
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
-                this.container.find('.ranges li').removeClass('active');
+                this.container.find('.ranges li:last').addClass('active');
                 this.showCalendars();
             } else {
                 var dates = this.ranges[label];
@@ -1347,15 +1353,13 @@
                 i++;
             }
             if (customRange) {
-                if (this.showCustomRangeLabel && this.chosenLabelWhenOpenWithCustomRange) {
+                if (this.showCustomRangeLabel) {
                     this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('data-range-key');
                 } else {
                     this.chosenLabel = null;
                 }
-
-                if (this.showCalendarsWhenOpenWithCustomRange) {
-                  this.showCalendars();
-                }
+                this.chosenLabel = null;
+                this.showCalendars();
             }
         },
 
