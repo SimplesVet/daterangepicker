@@ -611,7 +611,7 @@
             this.renderCalendar('right');
 
             //highlight any predefined range matching the current start and end dates
-            this.container.find('.ranges li').removeClass('active');
+            // this.container.find('.ranges li').removeClass('active');
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
@@ -1258,7 +1258,6 @@
         },
 
         clickDate: function(e) {
-
             if (!$(e.target).hasClass('available')) return;
 
             var title = $(e.target).attr('data-title');
@@ -1353,13 +1352,14 @@
                 i++;
             }
             if (customRange) {
-                if (this.showCustomRangeLabel) {
+                if (this.showCustomRangeLabel && this.chosenLabelWhenOpenWithCustomRange) {
                     this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('data-range-key');
                 } else {
                     this.chosenLabel = null;
                 }
-                this.chosenLabel = null;
-                this.showCalendars();
+                if (this.showCalendarsWhenOpenWithCustomRange) {
+                    this.showCalendars();
+                }
             }
         },
 
